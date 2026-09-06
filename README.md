@@ -4,6 +4,7 @@ A zero-touch deployment command-line interface (CLI) tool.
 - [ ] lint (unit test)
 - [ ] docker (build + scan)
 - [ ] deploy (ssh connection) + health check
+  - deployment via nginx reverse proxying
 - [ ] rollback
 - [ ] logging?
   - [ ] mysql logging
