@@ -3,7 +3,6 @@ A zero-touch deployment command-line interface (CLI) tool.
 
 ## Sources
 - [Installing Docker Engine](https://docs.docker.com/engine/)
-- [Nginx via Python](https://pypi.org/project/nginx-python/)
 
 ## Modules (To-Do)
 - [x] lint (unit test)
@@ -11,7 +10,7 @@ A zero-touch deployment command-line interface (CLI) tool.
 - [x] deploy (ssh connection)
   - [x] deployment via nginx reverse proxying
   - [x] deployment via linux screen
-- [ ] joining of everything
+- [x] joining of everything
 - [ ] rollback
 - [ ] logging?
   - [ ] mysql logging
