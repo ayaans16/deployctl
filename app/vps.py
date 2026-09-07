@@ -3,7 +3,7 @@ import os
 import sys
 from dotenv import load_dotenv
 
-from paths import resource_path
+from app.paths import resource_path
 from pyhocon import ConfigFactory
 from pyhocon.exceptions import ConfigMissingException
 

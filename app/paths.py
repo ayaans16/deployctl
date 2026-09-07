@@ -6,5 +6,5 @@ def resource_path(*parts: str) -> Path:
     if getattr(sys, "frozen", False):
         base = Path(sys._MEIPASS)
     else:
-        base = Path(__file__).resolve().parent.parent
+        base = Path.cwd()
     return base.joinpath(*parts)

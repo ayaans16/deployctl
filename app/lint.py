@@ -4,7 +4,7 @@ if all unit tests pass, it will move towards the docker portion
 if one unit test fails, it will stop the process and see what went wrong, and return the error
 """
 
-from paths import resource_path
+from app.paths import resource_path
 from pathlib import Path
 
 from pyhocon import ConfigFactory

@@ -2,11 +2,11 @@
 we can use a Linux screen rather than Docker
 """
 
-from paths import resource_path
+from app.paths import resource_path
 from pyhocon import ConfigFactory
 from pyhocon.exceptions import ConfigMissingException
 
-from vps import establish_ssh_connection, run_remote
+from app.vps import establish_ssh_connection, run_remote
 
 CONFIG_PATH = resource_path("deployctl.conf")
 
