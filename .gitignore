@@ -2,3 +2,4 @@
 .vscode
 .env
 deployctl.conf
+deployctl.egg-info/*
