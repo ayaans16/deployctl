@@ -1,2 +1,4 @@
 pyhocon
 docker
+paramiko
+python-dotenv
