@@ -1,5 +1,6 @@
 import paramiko
 import os
+import sys
 from dotenv import load_dotenv
 
 from paths import resource_path
@@ -159,6 +160,8 @@ if __name__ == "__main__":
     nginx = nginx_conf()
     if nginx:
         print("Nginx configuration has been added")
+    else:
+        sys.exit(1)
 
     certgen = ssl_certs()
     if certgen:
