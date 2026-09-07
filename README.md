@@ -1,6 +1,10 @@
 # deployctl
 A zero-touch deployment command-line interface (CLI) tool.
-## modules
+
+## Containerization
+- [Installing Docker Engine](https://docs.docker.com/engine/)
+
+## Modules (To-Do)
 - [x] lint (unit test)
 - [x] docker (build + scan)
 - [ ] deploy (ssh connection) + health check
