@@ -5,7 +5,7 @@ prerequisite: must have a dockerfile !!!!
 
 import docker
 
-from paths import resource_path
+from app.paths import resource_path
 from pyhocon import ConfigFactory
 from pyhocon.exceptions import ConfigMissingException
 
