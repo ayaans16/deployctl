@@ -1,8 +1,8 @@
 # deployctl
 A zero-touch deployment command-line interface (CLI) tool.
 ## modules
-- [ ] lint (unit test)
-- [ ] docker (build + scan)
+- [x] lint (unit test)
+- [x] docker (build + scan)
 - [ ] deploy (ssh connection) + health check
   - deployment via nginx reverse proxying
 - [ ] rollback
