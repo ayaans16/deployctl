@@ -8,9 +8,10 @@ A zero-touch deployment command-line interface (CLI) tool.
 ## Modules (To-Do)
 - [x] lint (unit test)
 - [x] docker (build + scan)
-- [ ] deploy (ssh connection) + health check
+- [x] deploy (ssh connection)
   - [x] deployment via nginx reverse proxying
-  - [ ] deployment via linux screen
+  - [x] deployment via linux screen
+- [ ] joining of everything
 - [ ] rollback
 - [ ] logging?
   - [ ] mysql logging
