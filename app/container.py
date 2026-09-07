@@ -51,7 +51,7 @@ def build_image():
 
     # dockerfile dne
     if not dockerfile_path.exists():
-        print("Dockerfile cannot be found. Please create one")
+        print("Dockerfile cannot be found. Please create one in the root of the project.")
         return False
 
     # empty Dockerfile
