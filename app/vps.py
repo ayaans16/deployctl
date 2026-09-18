@@ -1,21 +1,22 @@
-import paramiko
 import os
 import sys
-from dotenv import load_dotenv
 
-from app.paths import resource_path
+import paramiko
+from dotenv import load_dotenv
 from pyhocon import ConfigFactory
 from pyhocon.exceptions import ConfigMissingException
 
-CONFIG_PATH = resource_path("deployctl.conf")
+from app.paths import resource_path
+
 
 def load_config():
     # load the config
+    config_path = resource_path("deployctl.conf")
     try:
-        config = ConfigFactory.parse_file(str(CONFIG_PATH))
+        config = ConfigFactory.parse_file(str(config_path))
     except FileNotFoundError:
         # no config file with path provided
-        print(f"Configuration file not found at {CONFIG_PATH}. Please create the configuration file.")
+        print(f"Configuration file not found at {config_path}. Please create the configuration file.")
         return None
 
     try:
@@ -64,7 +65,7 @@ def establish_ssh_connection():
 
 # helper
 def run_remote(client, cmd):
-    stdin, stdout, stderr = client.exec_command(cmd)
+    _stdin, stdout, stderr = client.exec_command(cmd)
     exit_status = stdout.channel.recv_exit_status()
     if exit_status != 0:
         print(stdout.read().decode())
@@ -77,7 +78,7 @@ def nginx_conf():
     loaded = load_config()
     if loaded is None:
         return False
-    email, domain, nginx_config_filename, project_name = loaded
+    _email, _domain, nginx_config_filename, project_name = loaded
 
     # assume nginx.conf is in root
     nginx_config_path = resource_path(nginx_config_filename)
@@ -123,7 +124,7 @@ def ssl_certs():
     loaded = load_config()
     if loaded is None:
         return False
-    email, domain, nginx_config_filename, project_name = loaded
+    email, domain, _nginx_config_filename, _project_name = loaded
 
     if not email:
         print("Email was not able to be retrieved, check the config file")

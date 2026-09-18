@@ -4,24 +4,24 @@ if all unit tests pass, it will move towards the docker portion
 if one unit test fails, it will stop the process and see what went wrong, and return the error
 """
 
-from app.paths import resource_path
+import shlex
+import subprocess
 from pathlib import Path
 
 from pyhocon import ConfigFactory
 from pyhocon.exceptions import ConfigMissingException
 
-import subprocess
-import shlex
+from app.paths import resource_path
 
-CONFIG_PATH = resource_path("deployctl.conf")
 
 def load_config():
     # load the config
+    config_path = resource_path("deployctl.conf")
     try:
-        config = ConfigFactory.parse_file(str(CONFIG_PATH))
+        config = ConfigFactory.parse_file(str(config_path))
     except FileNotFoundError:
         # no config file with path provided
-        print(f"Configuration file not found at {CONFIG_PATH}. Please create the configuration file.")
+        print(f"Configuration file not found at {config_path}. Please create the configuration file.")
         return None
 
     try:

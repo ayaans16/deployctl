@@ -13,13 +13,12 @@ import sys
 from pyhocon import ConfigFactory
 from pyhocon.exceptions import ConfigMissingException
 
-from app.paths import resource_path
-from app.lint import run_unit_tests
 from app.container import run_container
-from app.vps import nginx_conf, ssl_certs, establish_ssh_connection, run_remote
-from app.screen import create_screen, load_config as load_screen_config
-
-CONFIG_PATH = resource_path("deployctl.conf")
+from app.lint import run_unit_tests
+from app.paths import resource_path
+from app.screen import create_screen
+from app.screen import load_config as load_screen_config
+from app.vps import establish_ssh_connection, nginx_conf, run_remote, ssl_certs
 
 # directories/files that should never get pushed to the VPS
 SYNC_EXCLUDE_DIRS = {".git", ".venv", "venv", "__pycache__", "node_modules", ".vscode"}
@@ -77,10 +76,11 @@ def sync_files():
     return True
 
 def get_how_to_run():
+    config_path = resource_path("deployctl.conf")
     try:
-        config = ConfigFactory.parse_file(str(CONFIG_PATH))
+        config = ConfigFactory.parse_file(str(config_path))
     except FileNotFoundError:
-        print(f"Configuration file not found at {CONFIG_PATH}. Please create the configuration file.")
+        print(f"Configuration file not found at {config_path}. Please create the configuration file.")
         return None
 
     try:

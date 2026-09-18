@@ -2,21 +2,21 @@
 we can use a Linux screen rather than Docker
 """
 
-from app.paths import resource_path
 from pyhocon import ConfigFactory
 from pyhocon.exceptions import ConfigMissingException
 
+from app.paths import resource_path
 from app.vps import establish_ssh_connection, run_remote
 
-CONFIG_PATH = resource_path("deployctl.conf")
 
 def load_config():
     # load the config
+    config_path = resource_path("deployctl.conf")
     try:
-        config = ConfigFactory.parse_file(str(CONFIG_PATH))
+        config = ConfigFactory.parse_file(str(config_path))
     except FileNotFoundError:
         # no config file with path provided
-        print(f"Configuration file not found at {CONFIG_PATH}. Please create the configuration file.")
+        print(f"Configuration file not found at {config_path}. Please create the configuration file.")
         return None
 
     try:
