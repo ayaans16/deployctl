@@ -1,0 +1,9 @@
+.git
+.venv
+__pycache__
+*.pyc
+.pytest_cache
+deployctl.egg-info
+.env
+deployctl.conf
+.vscode
