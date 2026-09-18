@@ -1,5 +1,7 @@
-.venv/*
+.venv
 .vscode
 .env
 deployctl.conf
-deployctl.egg-info/*
+deployctl.egg-info
+.pytest_cache
+.ruff_cache
