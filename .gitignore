@@ -5,3 +5,11 @@ deployctl.conf
 deployctl.egg-info
 .pytest_cache
 .ruff_cache
+
+# terraform
+terraform/.terraform/
+terraform/*.tfstate
+terraform/*.tfstate.*
+terraform/*.tfvars
+!terraform/*.tfvars.example
+terraform/crash.log

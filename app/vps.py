@@ -38,6 +38,7 @@ def establish_ssh_connection():
     VPS_IP = os.getenv('VPS_IP')
     VPS_USER = os.getenv('VPS_USER')
     VPS_PASSWORD = os.getenv('VPS_PASSWORD')
+    VPS_SSH_KEY_PATH = os.getenv('VPS_SSH_KEY_PATH')
 
     if not VPS_IP:
         print("VPS IP is missing from environment variables. Please add it.")
@@ -45,18 +46,26 @@ def establish_ssh_connection():
     if not VPS_USER:
         print("VPS user is missing from environment variables. Please add it.")
         return False
-    if not VPS_PASSWORD:
-        print("VPS password is missing from environment variables. Please add it.")
+    if not VPS_PASSWORD and not VPS_SSH_KEY_PATH:
+        print("Neither VPS_PASSWORD nor VPS_SSH_KEY_PATH is set in the environment. Please add one.")
         return False
 
     # validation
     ssh_client.load_system_host_keys()
     ssh_client.set_missing_host_key_policy(paramiko.RejectPolicy())
 
+    # prefer key-based auth when a key is provided (e.g. AWS EC2, which is
+    # key-only by default) — fall back to password auth otherwise
+    connect_kwargs = {"hostname": VPS_IP, "port": 22, "username": VPS_USER}
+    if VPS_SSH_KEY_PATH:
+        connect_kwargs["key_filename"] = os.path.expanduser(VPS_SSH_KEY_PATH)
+    else:
+        connect_kwargs["password"] = VPS_PASSWORD
+
     # connection
     # port for SSH is 22
     try:
-        ssh_client.connect(hostname=VPS_IP, port=22, username=VPS_USER, password=VPS_PASSWORD)
+        ssh_client.connect(**connect_kwargs)
     except Exception as e:
         print(f"An error has occurred: {e}")
         return False

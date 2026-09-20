@@ -1,0 +1,8 @@
+# copy this to terraform.tfvars and fill in real values
+# (terraform.tfvars itself is gitignored — don't commit it)
+
+project_name     = "myapp"
+allowed_ssh_cidr = "YOUR_IP/32" # find yours with: curl -s ifconfig.me
+public_key_path  = "~/.ssh/deployctl_aws.pub"
+# aws_region     = "us-east-1"
+# instance_type  = "t2.micro"
