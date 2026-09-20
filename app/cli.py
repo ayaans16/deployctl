@@ -14,8 +14,10 @@ from pyhocon import ConfigFactory
 from pyhocon.exceptions import ConfigMissingException
 
 from app.container import run_container
+from app.health import health_check
 from app.lint import run_unit_tests
 from app.paths import resource_path
+from app.rollback import rollback
 from app.screen import create_screen
 from app.screen import load_config as load_screen_config
 from app.vps import establish_ssh_connection, nginx_conf, run_remote, ssl_certs
@@ -41,6 +43,17 @@ def sync_files():
         path_for_project = remote_home + path_for_project[1:]
 
     remote_root = f"{path_for_project.rstrip('/')}/{project_name}"
+
+    # keep whatever's currently deployed as a .previous backup before
+    # overwriting it, so rollback.py has something to restore; only swaps
+    # if remote_root already exists (a first-ever deploy has nothing to back up)
+    backup_cmd = (
+        f'bash -c "if [ -d {remote_root} ]; then '
+        f'rm -rf {remote_root}.previous && mv {remote_root} {remote_root}.previous; fi"'
+    )
+    if not run_remote(client, backup_cmd):
+        print("An error occurred backing up the previous deployment")
+        return False
 
     if not run_remote(client, f'mkdir -p {remote_root}'):
         print("An error occurred creating the remote project directory")
@@ -108,6 +121,7 @@ STEPS = [
     ("lint", run_unit_tests),
     ("sync", sync_files),
     ("run", run_app),
+    ("health_check", health_check),
     ("nginx", nginx_conf),
     ("ssl", ssl_certs),
 ]
@@ -116,7 +130,14 @@ def run_deploy():
     for name, step in STEPS:
         print(f"--- running step: {name} ---")
         if not step():
-            print(f"Step '{name}' failed. Aborting deployment.")
+            print(f"Step '{name}' failed.")
+            if name == "health_check":
+                print("Rolling back to the previous version...")
+                if rollback():
+                    print("Rollback succeeded.")
+                else:
+                    print("Rollback FAILED — manual intervention required.")
+            print("Aborting deployment.")
             return False
     return True
 
@@ -127,9 +148,13 @@ def main():
     subparsers.add_parser("lint", help="Run the project's unit tests")
     subparsers.add_parser("sync", help="Push the local project files to the VPS")
     subparsers.add_parser("run", help="Build/start the app (Docker or Linux screen, per config)")
+    subparsers.add_parser("health", help="Verify the app is responding on its port")
     subparsers.add_parser("nginx", help="Push the nginx config and reload")
     subparsers.add_parser("ssl", help="Install certbot and generate an SSL certificate")
-    subparsers.add_parser("deploy", help="Run the full pipeline: lint -> sync -> run -> nginx -> ssl")
+    subparsers.add_parser("rollback", help="Roll back to the previously deployed version")
+    subparsers.add_parser(
+        "deploy", help="Run the full pipeline: lint -> sync -> run -> health_check -> nginx -> ssl"
+    )
 
     args = parser.parse_args()
 
@@ -137,8 +162,10 @@ def main():
         "lint": run_unit_tests,
         "sync": sync_files,
         "run": run_app,
+        "health": health_check,
         "nginx": nginx_conf,
         "ssl": ssl_certs,
+        "rollback": rollback,
         "deploy": run_deploy,
     }
 
