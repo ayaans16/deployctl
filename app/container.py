@@ -48,6 +48,11 @@ def run_container():
     if not client:
         return False
 
+    # keep whatever is currently :latest as :previous before overwriting it,
+    # so rollback.py has something to fall back to; ignore failure since the
+    # very first deploy has no existing :latest to tag yet
+    run_remote(client, f'bash -c "docker tag {project_name}:latest {project_name}:previous || true"')
+
     # assumption is a Dockerfile already exists in the synced project directory
     build_cmd = f'bash -c "cd {project_path} && docker build -t {project_name}:latest ."'
     if not run_remote(client, build_cmd):
