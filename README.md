@@ -54,6 +54,20 @@ All the work is done using two files: the standard `.env` file and a special `de
 - Add your unit test folder path and unit test command
 - Add the Nginx configuration filename located in root with your domain name so it can create the reverse proxy
 ---
+## `.env`
+```yaml
+  # vps information
+  VPS_IP=
+  VPS_USER=
+
+  # use VPS_PASSWORD for password auth, or VPS_SSH_KEY_PATH for key-based auth
+  # (required for AWS EC2, which is key-only by default), set one, not both
+  VPS_PASSWORD=
+  VPS_SSH_KEY_PATH=
+```
+- Add your VPS informartion
+- Add **either** the password for your VPS or the path to your private key file to access the VPS via SSH.
+---
 ## Commands
 | Command | Purpose |
 | -------- | -------- |
