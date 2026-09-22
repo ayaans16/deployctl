@@ -4,7 +4,7 @@ version = "0.1.0"
 dependencies = ["pyhocon", "paramiko", "python-dotenv"]
 
 [project.optional-dependencies]
-dev = ["pytest>=9.1.1", "ruff>=0.4"]
+dev = ["pytest>=9.1.1", "ruff>=0.16.8"]
 
 [project.scripts]
 deployctl = "app.cli:main"
