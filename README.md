@@ -56,6 +56,7 @@ All the work is done using two files: the standard `.env` file and a special `de
 ---
 ## Commands
 | Command | Purpose |
+| -------- | -------- |
 | `deployctl deploy` | Runs the whole pipeline |
 | `deployctl lint` | Only runs the unit testing |
 | `deployctl sync` | Pushes local files to your VPS |
