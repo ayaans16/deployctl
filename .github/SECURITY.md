@@ -4,7 +4,7 @@
 
 If you find a security issue in `deployctl`, please report it privately rather than opening a public GitHub issue — this gives us time to fix it before it's disclosed.
 
-- Email: [your-email@example.com] *(replace with a real contact you check)*
+- Email: `contact@ayaanshaikh.ca`
 - Please include: a description of the issue, steps to reproduce, and the potential impact
 - We'll acknowledge reports within a few days and aim to have a fix or mitigation before any public disclosure
 
