@@ -2,6 +2,9 @@
 ## Sources
 - [Installing Docker Engine](https://docs.docker.com/engine/)
 
+> [!TIP]
+> Install this using Homebrew: `brew tap ayaans16/deployctl https://github.com/ayaans16/deployctl`
+
 ## How It Works
 `deployctl` is a command-line interface tool that allows you to automate the deployment of your projects with little to no extra work, just providing the tool some information so it can do the heavy lifting for you.
 
