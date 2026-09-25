@@ -9,7 +9,7 @@
 `deployctl` is a command-line interface tool that allows you to automate the deployment of your projects with little to no extra work, just providing the tool some information so it can do the heavy lifting for you.
 
 All the work is done using two files: the standard `.env` file and a special `deployctl.conf` file in your project's root.
-> [!TIP]
+> [!NOTE]
 > You can add `deployctl.conf` into `.gitignore` if you want to hide any specifics.
 ---
 ## `deployctl.conf`
