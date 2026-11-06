@@ -11,6 +11,7 @@
 All the work is done using two files: the standard `.env` file and a special `deployctl.conf` file in your project's root.
 > [!TIP]
 > Don't want to write them by hand? Run `deployctl init` in your project's root. It asks a few questions (with sensible defaults), then writes both files, locks `.env` down to owner-only permissions, and offers to add them to your `.gitignore`.
+
 > [!NOTE]
 > You can add `deployctl.conf` into `.gitignore` if you want to hide any specifics.
 ---
