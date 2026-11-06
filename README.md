@@ -9,6 +9,8 @@
 `deployctl` is a command-line interface tool that allows you to automate the deployment of your projects with little to no extra work, just providing the tool some information so it can do the heavy lifting for you.
 
 All the work is done using two files: the standard `.env` file and a special `deployctl.conf` file in your project's root.
+> [!TIP]
+> Don't want to write them by hand? Run `deployctl init` in your project's root. It asks a few questions (with sensible defaults), then writes both files, locks `.env` down to owner-only permissions, and offers to add them to your `.gitignore`.
 > [!NOTE]
 > You can add `deployctl.conf` into `.gitignore` if you want to hide any specifics.
 ---
@@ -74,7 +76,8 @@ All the work is done using two files: the standard `.env` file and a special `de
 ## Commands
 | Command | Purpose |
 | -------- | -------- |
-| `deployctl deploy` | Runs the whole pipeline |
+| `deployctl init` | Interactive setup: creates `deployctl.conf` and `.env` for you |
+| `deployctl deploy` | Runs the whole pipeline, with per-stage progress, timings and a summary |
 | `deployctl lint` | Only runs the unit testing |
 | `deployctl sync` | Pushes local files to your VPS |
 | `deployctl run` | Starts the GNU screen or Docker |

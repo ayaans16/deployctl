@@ -9,12 +9,15 @@ stopping at the first step that fails.
 import argparse
 import os
 import sys
+import time
 
 from pyhocon import ConfigFactory
 from pyhocon.exceptions import ConfigMissingException
 
+from app import ui
 from app.container import run_container
 from app.health import health_check
+from app.init_wizard import run_init
 from app.lint import run_unit_tests
 from app.paths import resource_path
 from app.rollback import rollback
@@ -127,24 +130,43 @@ STEPS = [
 ]
 
 def run_deploy():
-    for name, step in STEPS:
-        print(f"--- running step: {name} ---")
-        if not step():
-            print(f"Step '{name}' failed.")
-            if name == "health_check":
-                print("Rolling back to the previous version...")
-                if rollback():
-                    print("Rollback succeeded.")
-                else:
-                    print("Rollback FAILED — manual intervention required.")
-            print("Aborting deployment.")
-            return False
+    results = []
+    started = time.monotonic()
+
+    for index, (name, step) in enumerate(STEPS, start=1):
+        ui.stage_banner(index, len(STEPS), name)
+        step_started = time.monotonic()
+        ok = bool(step())
+        elapsed = time.monotonic() - step_started
+        ui.stage_result(name, ok, elapsed)
+        results.append((name, "passed" if ok else "failed", elapsed))
+
+        if ok:
+            continue
+
+        if name == "health_check":
+            print("Rolling back to the previous version...")
+            rollback_started = time.monotonic()
+            rolled_back = bool(rollback())
+            results.append(
+                ("rollback", "passed" if rolled_back else "failed", time.monotonic() - rollback_started)
+            )
+            if not rolled_back:
+                print("Rollback FAILED — manual intervention required.")
+
+        results.extend((later_name, "skipped", 0.0) for later_name, _ in STEPS[index:])
+        ui.summary(results, time.monotonic() - started)
+        print("Aborting deployment.")
+        return False
+
+    ui.summary(results, time.monotonic() - started)
     return True
 
 def main():
     parser = argparse.ArgumentParser(prog="deployctl", description="zero-touch deployment CLI")
     subparsers = parser.add_subparsers(dest="command", required=True)
 
+    subparsers.add_parser("init", help="Interactively create deployctl.conf and .env in this directory")
     subparsers.add_parser("lint", help="Run the project's unit tests")
     subparsers.add_parser("sync", help="Push the local project files to the VPS")
     subparsers.add_parser("run", help="Build/start the app (Docker or Linux screen, per config)")
@@ -159,6 +181,7 @@ def main():
     args = parser.parse_args()
 
     commands = {
+        "init": run_init,
         "lint": run_unit_tests,
         "sync": sync_files,
         "run": run_app,
